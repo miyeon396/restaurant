@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Comment;
-import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -13,8 +12,8 @@ import org.springframework.data.domain.Persistable;
 @NoArgsConstructor
 @BatchSize(size = 100)
 @Entity
-@Table(name = "TBRS_INFO")
-public class RestaurantInfo extends CreateBase implements Persistable<Long> {
+@Table(name = "TBL_RESTAURANT_INFO_L")
+public class RestaurantInfo extends CreaDtUpdtDtBase {
 
     @Id
     @Column(name="NO") @Comment("번호")
@@ -122,14 +121,4 @@ public class RestaurantInfo extends CreateBase implements Persistable<Long> {
     @Transient
     private String lastEmptyColumn; //do-nothing
 
-
-    @Override
-    public Long getId() {
-        return no;
-    }
-
-    @Override
-    public boolean isNew() {
-        return getCreaDt() == null;
-    }
 }
