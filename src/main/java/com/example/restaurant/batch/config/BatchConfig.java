@@ -45,7 +45,7 @@ public class BatchConfig {
     public Step fileProcessStep(JobRepository jobRepository,
                                 PlatformTransactionManager transactionManager) throws Exception {
         return new StepBuilder("fileReadWriteStep", jobRepository)
-                .<RestaurantInfo, RestaurantInfo>chunk(500, transactionManager)
+                .<RestaurantInfo, RestaurantInfo>chunk(1000, transactionManager)
                 .reader(csvReader.csvContentReader())
 //                .processor(processor()) //TODO :: 엔티티 분리 프로세서
                 .writer(csvWriter)
