@@ -4,8 +4,9 @@ import com.example.restaurant.batch.item.CsvPartitioner;
 import com.example.restaurant.batch.item.CsvReader;
 import com.example.restaurant.batch.item.CsvWriter;
 import com.example.restaurant.batch.listener.EtlRestaurantJobExecutionListener;
-import com.example.restaurant.batch.listener.FlatFileParseExceptionItemReadListener;
+import com.example.restaurant.batch.listener.ExceptionItemReadListener;
 import com.example.restaurant.entity.RestaurantInfo;
+import com.example.restaurant.repository.RestaurantErrorInfoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.Job;
@@ -28,6 +29,7 @@ public class BatchConfig {
 
     private final CsvReader csvReader;
     private final CsvWriter csvWriter;
+    private final RestaurantErrorInfoRepository restaurantErrorInfoRepository;
 
     @Bean
     public Job etlRestaurantJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
@@ -84,7 +86,7 @@ public class BatchConfig {
 
     @Bean
     public ItemReadListener<RestaurantInfo> getFlatFileParseExceptionItemReadListener() {
-        return new FlatFileParseExceptionItemReadListener();
+        return new ExceptionItemReadListener(restaurantErrorInfoRepository);
     }
 
 

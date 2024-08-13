@@ -1,6 +1,6 @@
 package com.example.restaurant.batch.item;
 
-import com.example.restaurant.common.CsvUtils;
+import com.example.restaurant.common.utils.CsvUtils;
 import com.example.restaurant.entity.RestaurantInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.configuration.annotation.StepScope;

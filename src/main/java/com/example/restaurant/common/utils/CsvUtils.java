@@ -1,4 +1,4 @@
-package com.example.restaurant.common;
+package com.example.restaurant.common.utils;
 
 import lombok.experimental.UtilityClass;
 
