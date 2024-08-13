@@ -4,11 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Comment;
-
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.data.domain.Persistable;
 
 @Getter
 @Setter
@@ -18,7 +14,7 @@ import java.util.List;
 @BatchSize(size = 100)
 @Entity
 @Table(name = "TBRS_INFO")
-public class RestaurantInfo implements Serializable {
+public class RestaurantInfo extends CreateBase implements Persistable<Long> {
 
     @Id
     @Column(name="NO") @Comment("번호")
@@ -126,4 +122,14 @@ public class RestaurantInfo implements Serializable {
     @Transient
     private String lastEmptyColumn; //do-nothing
 
+
+    @Override
+    public Long getId() {
+        return no;
+    }
+
+    @Override
+    public boolean isNew() {
+        return getCreaDt() == null;
+    }
 }

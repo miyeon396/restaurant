@@ -15,7 +15,6 @@ public class CsvWriter implements ItemWriter<RestaurantInfo> {
     @Override
     public void write(Chunk<? extends RestaurantInfo> items) throws Exception {
         restaurantInfoRepository.saveAll(items);
-
     }
 
 }

@@ -115,6 +115,14 @@
 - 6m30s857ms
 - Skip Count :: 3
 
+15. 15차 : select 현상 개선 
+- persistable 구현
+- 2024-08-13 17:49:04.308752
+- 2024-08-13 17:50:28.248287
+- executed in 1m23s901ms
+- Skip Count :: 3 2157824
+
+
 
 ### Processing Time 
 | 시도 | 설명 | Start Time | End Time | 소요시간 | Skip Count | 비고 |
