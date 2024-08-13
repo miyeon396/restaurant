@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@BatchSize(size = 50)
+@BatchSize(size = 100)
 @Entity
 @Table(name = "TBRS_INFO")
 public class RestaurantInfo implements Serializable {

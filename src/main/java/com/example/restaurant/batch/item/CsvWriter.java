@@ -14,12 +14,6 @@ public class CsvWriter implements ItemWriter<RestaurantInfo> {
 
     @Override
     public void write(Chunk<? extends RestaurantInfo> items) throws Exception {
-//        List<PlayerYears> scheduleList = new ArrayList<>();
-//
-//        items.forEach(getScheduleDto -> {
-//            scheduleList.add(getScheduleDto);
-//        });
-
         restaurantInfoRepository.saveAll(items);
 
     }
