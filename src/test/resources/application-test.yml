@@ -12,6 +12,8 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    naming:
+      physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQLDialect
       hibernate.jdbc.batch_size: 200

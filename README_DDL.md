@@ -1,0 +1,73 @@
+#### 파일 설명
+- DDL Script 파일입니다.
+- MySQL DB Local 설정 완료 후에 아래 2개의 테이블 스크립트를 실행 시킵니다.
+
+#### DDL
+```
+-- RESTAURANT.TBL_RESTAURANT_ERROR_L definition
+
+CREATE TABLE `TBL_RESTAURANT_ERROR_L` (
+  `NO` bigint NOT NULL AUTO_INCREMENT COMMENT '번호',
+  `ERR_RESTAURANT_ID` varchar(10) DEFAULT NULL COMMENT '에러 점포 아이디',
+  `ERR_MSG` text COMMENT '에러 메세지',
+  `CREA_DT` datetime(6) DEFAULT NULL COMMENT '생성일시',
+  PRIMARY KEY (`NO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='음식점 처리시 에러 리스트';
+```
+
+```
+-- RESTAURANT.TBL_RESTAURANT_INFO_L definition
+
+CREATE TABLE `TBL_RESTAURANT_INFO_L` (
+  `NO` bigint NOT NULL COMMENT '번호',
+  `OPN_SVC_NM` varchar(50) DEFAULT NULL COMMENT '개방서비스명',
+  `OPN_SVC_ID` varchar(30) DEFAULT NULL COMMENT '개방서비스아이디',
+  `OPN_SF_TEAM_CODE` varchar(10) DEFAULT NULL COMMENT '개방자치단체코드',
+  `MGT_NO` varchar(50) DEFAULT NULL COMMENT '관리번호',
+  `APV_PERM_YMD` char(10) DEFAULT NULL COMMENT '인허가일자',
+  `APV_CANCEL_YMD` varchar(10) DEFAULT NULL COMMENT '인허가취소일자',
+  `TRD_STATE_GBN` varchar(5) DEFAULT NULL COMMENT '영업상태구분코드',
+  `TRD_STATE_NM` varchar(10) DEFAULT NULL COMMENT '영업상태명',
+  `DTL_STATE_GBN` varchar(5) DEFAULT NULL COMMENT '상세영업상태코드',
+  `DTL_STATE_NM` varchar(10) DEFAULT NULL COMMENT '상세영업상태명',
+  `DCB_YMD` char(10) DEFAULT NULL COMMENT '폐업일자',
+  `CLG_ST_DT` char(10) DEFAULT NULL COMMENT '휴업시작일자',
+  `CLG_END_DT` char(10) DEFAULT NULL COMMENT '휴업종료일자',
+  `ROPN_YMD` char(10) DEFAULT NULL COMMENT '재개업일자',
+  `SITE_TEL` varchar(15) DEFAULT NULL COMMENT '소재지전화',
+  `SITE_AREA` varchar(15) DEFAULT NULL COMMENT '소재지면적',
+  `SITE_POST_NO` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '소재지우편번호',
+  `SITE_WHL_ADDR` varchar(255) DEFAULT NULL COMMENT '소재지전체주소',
+  `RDN_POST_NO` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '도로명우편번호',
+  `RDN_WHL_ADDR` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '도로명전체주소',
+  `BPLC_NM` varchar(255) DEFAULT NULL COMMENT '사업장명',
+  `LAST_MOD_TS` varchar(19) DEFAULT NULL COMMENT '최종수정시점',
+  `DATA_UPDATE_GBN` varchar(5) DEFAULT NULL COMMENT '데이터갱신구분',
+  `DATA_UPDATE_DT` varchar(19) DEFAULT NULL COMMENT '데이터갱신일자',
+  `UPTAE_NM` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '업태구분명',
+  `POS_X` double DEFAULT NULL COMMENT '좌표정보X',
+  `POS_Y` double DEFAULT NULL COMMENT '좌표정보Y',
+  `HGY_UPTAE_NM` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '위생업태명',
+  `MALE_EMP_CNT` int DEFAULT NULL COMMENT '남성종사자수',
+  `FEMALE_EMP_CNT` int DEFAULT NULL COMMENT '여성종사자수',
+  `BIZ_AREA_NM` varchar(10) DEFAULT NULL COMMENT '영업장주변구분명',
+  `GRD_GBN_NM` varchar(10) DEFAULT NULL COMMENT '등급구분명',
+  `WTR_FCLTY_GBN_NM` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '급수시설구분명',
+  `TOT_EMP_CNT` int DEFAULT NULL COMMENT '총직원수',
+  `HQ_EMP_CNT` int DEFAULT NULL COMMENT '본사직원수',
+  `FACT_OFC_EMP_CNT` int DEFAULT NULL COMMENT '공장사무직직원수',
+  `FACT_SLS_EMP_CNT` int DEFAULT NULL COMMENT '공장판매직직원수',
+  `FACT_PRD_EMP_CNT` int DEFAULT NULL COMMENT '공장생산직직원수',
+  `BLD_OWN_GBN_NM` varchar(10) DEFAULT NULL COMMENT '건물소유구분명',
+  `SEC_DEP_AMT` double DEFAULT NULL COMMENT '보증액',
+  `MNTH_RNT_AMT` double DEFAULT NULL COMMENT '월세액',
+  `MULTI_USE_GBN_YN` char(1) DEFAULT NULL COMMENT '다중이용업소여부',
+  `TOT_FCLTY_AREA` double DEFAULT NULL COMMENT '시설총규모',
+  `TRADITIONL_INDS_NO` varchar(15) DEFAULT NULL COMMENT '전통업소지정번호',
+  `TRADITIONL_INDS_FOOD` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT '전통업소주된음식',
+  `HOMEPAGE` varchar(255) DEFAULT NULL COMMENT '홈페이지',
+  `CREA_DT` datetime(6) DEFAULT NULL COMMENT '생성일시',
+  `UPDT_DT` datetime(6) DEFAULT NULL COMMENT '수정일시',
+  PRIMARY KEY (`NO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='음식점 정보 리스트';
+```
