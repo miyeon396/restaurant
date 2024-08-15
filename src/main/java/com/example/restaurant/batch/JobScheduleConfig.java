@@ -22,7 +22,7 @@ public class JobScheduleConfig {
     private final JobLauncher jobLauncher;
     private final Job etlRestaurantJob;
 
-    @Scheduled(cron = "40 36 19 * * *")
+    @Scheduled(cron = "${schedule.job.etlRestaurantJob}")
     public void startEtlRestaurantJob() {
         try {
             JobParameters jobParameters = new JobParametersBuilder()
