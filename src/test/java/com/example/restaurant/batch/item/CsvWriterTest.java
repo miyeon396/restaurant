@@ -27,17 +27,17 @@ class CsvWriterTest {
     @Transactional
     public void 파싱결과_저장_성공테스트() throws Exception {
         RestaurantInfo restaurantInfo1 = new RestaurantInfo();
-        restaurantInfo1.setNo(1L);
+        restaurantInfo1.setNo(2200000L);
         RestaurantInfo restaurantInfo2 = new RestaurantInfo();
-        restaurantInfo2.setNo(2L);
+        restaurantInfo2.setNo(2200001L);
         List<RestaurantInfo> restaurantInfos = Arrays.asList(restaurantInfo1, restaurantInfo2);
 
         csvWriter.write(new Chunk<>(restaurantInfos));
 
-        List<RestaurantInfo> savedItems = restaurantInfoRepository.findAll();
+        List<RestaurantInfo> savedItems = restaurantInfoRepository.findAllById(List.of("2200000", "2200001"));
         assertEquals(2, savedItems.size());
-        assertTrue(savedItems.stream().anyMatch(item -> item.getNo() == 1L));
-        assertTrue(savedItems.stream().anyMatch(item -> item.getNo() == 2L));
+        assertTrue(savedItems.stream().anyMatch(item -> item.getNo() == 2200000L));
+        assertTrue(savedItems.stream().anyMatch(item -> item.getNo() == 2200001L));
     }
 
 }
