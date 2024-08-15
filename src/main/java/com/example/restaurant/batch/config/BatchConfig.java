@@ -17,6 +17,7 @@ import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.file.FlatFileParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.TaskExecutor;
@@ -30,6 +31,9 @@ public class BatchConfig {
     private final CsvReader csvReader;
     private final CsvWriter csvWriter;
     private final RestaurantErrorInfoRepository restaurantErrorInfoRepository;
+
+    @Value("${etlRestaurantJob.partitioner.maxCnt}")
+    private int maxCnt;
 
     @Bean
     public Job etlRestaurantJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
@@ -57,7 +61,7 @@ public class BatchConfig {
 
     @Bean
     public Partitioner csvPartitioner() {
-        return new CsvPartitioner();
+        return new CsvPartitioner(maxCnt);
     }
 
     @Bean

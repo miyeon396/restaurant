@@ -24,3 +24,6 @@ spring:
     job:
       names: etlRestaurantJob
       enabled: false
+etlRestaurantJob:
+  partitioner:
+    maxCnt: 2200000
