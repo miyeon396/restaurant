@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQLDialect
@@ -20,14 +20,16 @@ spring:
 
   batch:
     jdbc:
-      initialize-schema: always
+      initialize-schema: always #
     job:
       names: etlRestaurantJob
-      enabled: false
+      enabled: false #true
+
+
 etlRestaurantJob:
   partitioner:
-    maxCnt: 2200000
+    maxCnt: 10
   encoding:
     type: EUC-KR
   csv:
-    path: src/main/resources/fulldata_07_24_04_P_일반음식점.csv
+    path: src/test/resources/test.csv

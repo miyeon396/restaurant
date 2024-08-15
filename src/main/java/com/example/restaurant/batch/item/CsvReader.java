@@ -17,19 +17,20 @@ import org.springframework.core.io.FileSystemResource;
 @Configuration
 @RequiredArgsConstructor
 public class CsvReader {
+    @Value("${etlRestaurantJob.csv.path}")
+    private String csvFilePath;
 
-    private static String ENCODING = "EUC-KR";
-    private static String CSV_FILE_PATH = "src/main/resources/fulldata_07_24_04_P_일반음식점.csv";
+    @Value("${etlRestaurantJob.encoding.type}")
+    private String encodingType;
 
     @Bean
     @StepScope
-    public FlatFileItemReader<RestaurantInfo> csvContentReader(
-            @Value("#{stepExecutionContext['minValue']}") Integer minValue,
-            @Value("#{stepExecutionContext['maxValue']}") Integer maxValue) {
+    public FlatFileItemReader<RestaurantInfo> csvContentReader(@Value("#{stepExecutionContext['minValue']}") Integer minValue,
+                                                               @Value("#{stepExecutionContext['maxValue']}") Integer maxValue) {
 
         FlatFileItemReader<RestaurantInfo> reader = new FlatFileItemReader<>();
-        reader.setResource(new FileSystemResource(CSV_FILE_PATH));
-        reader.setEncoding(ENCODING);
+        reader.setResource(new FileSystemResource(csvFilePath));
+        reader.setEncoding(encodingType);
 
         DefaultLineMapper<RestaurantInfo> lineMapper = new DefaultLineMapper<>();
         DelimitedLineTokenizer tokenizer = new DelimitedLineTokenizer();
