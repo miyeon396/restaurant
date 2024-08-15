@@ -6,10 +6,10 @@
   - etlRestaurantJob
     - partitionedFileProcessingStep 
 - Table 구성
-  - TBL_RESATURANT_INFO_L : CSV 파싱 데이터 
-  - TBL_RESATURANT_INFO : 에러 관리 테이블
+  - TBL_RESTAURANT_INFO_L : CSV 파싱 데이터 
+  - TBL_RESTAURANT_ERROR_L : 에러 관리 테이블
 - 최종 결과 소요 시간 : 약 5m
-- 처리 카운트 : 2157824(Data 오류로 인한 Skip 3)
+- 처리 카운트 : 2,157,824(Data 오류로 인한 Skip 3)
 
 ## 상세 내용
 
@@ -23,8 +23,14 @@
 
 ### 프로젝트 설정 및 실행 가이드
 1. 프로젝트 추가
-   - GitHub clone
-   - Project import
+   1) git-lfs 설치  
+      - 업로드 파일 용량 제한으로 git-lfs 사용하여 csv 업로드 진행 
+      - Clone시 git-lfs가 local에 설치 되어있어야 csv 원본 파일 다운로드가 가능
+      - 설치 방법
+        - brew install git-lfs
+        - git lfs intall
+   2) GitHub clone
+   3) Project import
 2. Local DB 추가
    - Local에 사용중인 MySQL을 사용할 경우
      - application.yml의 spring.datasource.url(url+database), username, password를 로컬 설정에 맞도록 변경 
@@ -58,7 +64,7 @@
      4) 배치 수동 실행 - CURL
         - curl --location 'http://localhost:8080/start/etl-restaurant-job'
 5. 결과 확인
-   - DB TBL_RESATURANT_INFO_L 테이블 데이터 확인
+   - DB TBL_RESTAURANT_INFO_L 테이블 데이터 확인
 
 ### 테스트 가이드 
 - 테스트의 경우 test.csv 파일로 진행합니다. (원본 데이터의 169038 ~ 169043 부분)
