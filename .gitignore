@@ -34,3 +34,5 @@ out/
 
 ### VS Code ###
 .vscode/
+src/main/resources/fulldata_07_24_04_P_일반음식점.csv
+src/test/resources/test.csv
