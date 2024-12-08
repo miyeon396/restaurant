@@ -7,6 +7,11 @@ spring:
     username: dbuser
     password: dbuser
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+      idle-timeout: 30000
+      connection-timeout: 30000
 
   jpa:
     hibernate:
@@ -16,7 +21,7 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQLDialect
-      hibernate.jdbc.batch_size: 200
+      hibernate.jdbc.batch_size: 1000
       hibernate.order_inserts: true
       hibernate.order_updates: true
 

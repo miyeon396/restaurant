@@ -1,31 +1,64 @@
 package com.example.restaurant.batch.jobs.pseudonimize;
 
+import com.example.restaurant.batch.item.CsvPartitioner;
 import com.example.restaurant.batch.listener.EtlRestaurantJobExecutionListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @RequiredArgsConstructor
 public class PseudonimizeJobConfig {
 
+    @Value("${etlRestaurantJob.partitioner.maxCnt}")
+    private int maxCnt;
+
+
     @Bean
     public Job pseudonimizeJob(JobRepository jobRepository,
-                                PlatformTransactionManager transactionManager,
-                                @Qualifier("createPseudonimizeStep") Step create) {
+                               PlatformTransactionManager transactionManager) {
         return new JobBuilder("pseudonimizeJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
-//                .start(partitionedFileProcessingStep(jobRepository, transactionManager))
-                .start(create)
+                .start(pseudonimizePartitionStep(null, null))
+//                .start("partitionStep", pseudonimizePartitioner())
+//                .start(create)
                 .listener(new EtlRestaurantJobExecutionListener())
                 .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step pseudonimizePartitionStep(JobRepository jobRepository,
+                                          @Qualifier("createPseudonimizeStep") Step create) {
+        return new StepBuilder("pseudonimizePartitionStep", jobRepository)
+                .partitioner("partitionStep", new CsvPartitioner(maxCnt))
+                .step(create)
+                .gridSize(15)
+                .taskExecutor(pseudonimizeTaskExecutor())
+                .build();
+    }
+
+    @Bean
+    public TaskExecutor pseudonimizeTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(15);
+        executor.setQueueCapacity(100);
+        executor.setThreadNamePrefix("batch-task-");
+        executor.initialize();
+        return executor;
     }
 
     // 할 일

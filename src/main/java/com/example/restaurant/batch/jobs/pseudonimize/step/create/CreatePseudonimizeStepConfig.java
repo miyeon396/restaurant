@@ -1,29 +1,39 @@
 package com.example.restaurant.batch.jobs.pseudonimize.step.create;
 
+import com.example.restaurant.common.utils.QuerydslPagingItemReader;
+import com.example.restaurant.entity.FakeRestaurantInfo;
+import com.example.restaurant.entity.RestaurantInfo;
+import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.database.JpaItemWriter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.util.List;
+import static com.example.restaurant.entity.QRestaurantInfo.restaurantInfo;
 
 @Configuration
 @RequiredArgsConstructor
 public class CreatePseudonimizeStepConfig {
 
+    private final EntityManagerFactory entityManagerFactory;
+    private final RestaurantEntityMapper mapper;
+
     @Bean
     public Step createPseudonimizeStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
         return new StepBuilder("createPseudonimizeStep", jobRepository)
-                .<String, String>chunk(1000, transactionManager)
-                .reader(createPseudonimizeReader())
+                .<RestaurantInfo, FakeRestaurantInfo>chunk(1000, transactionManager)
+                .reader(createPseudonimizeReader(null, null))
+                .processor(createPseudonimizeProcessor())
                 .writer(createPseudonimizeWriter())
                 .listener(new StepExecutionListener() {
                     @Override
@@ -40,30 +50,37 @@ public class CreatePseudonimizeStepConfig {
                 .build();
     }
 
-
-    private ItemReader<String> createPseudonimizeReader() {
-        return new ItemReader<>() {
-            private final List<String> data = List.of("data1", "data2", "data3");
-            private int index = 0;
-
-            @Override
-            public String read() {
-                if (index < data.size()) {
-                    return data.get(index++);
-                } else {
-                    return null; // 데이터가 없으면 null 반환
-                }
-            }
-        };
+    @Bean
+    @StepScope
+    public QuerydslPagingItemReader<RestaurantInfo> createPseudonimizeReader(
+            @Value("#{stepExecutionContext['minValue']}") Integer minValue,
+            @Value("#{stepExecutionContext['maxValue']}") Integer maxValue
+    ) {
+        System.out.println("start = " + minValue);
+        System.out.println("end = " + maxValue);
+        return new QuerydslPagingItemReader<>(entityManagerFactory,
+                1000,
+                true,
+                jpaQueryFactory -> jpaQueryFactory.selectFrom(restaurantInfo)
+                        .where(restaurantInfo.no.between(minValue, maxValue)));
+//                        .where(restaurantInfo.apvPermYmd.eq("2024-07-30")));
     }
 
-    private ItemWriter<String> createPseudonimizeWriter() {
-        return items -> {
-            for (String item : items) {
-                System.out.println("처리된 데이터: " + item);
-            }
-        };
+    @Bean
+    @StepScope
+    public ItemProcessor<RestaurantInfo, FakeRestaurantInfo> createPseudonimizeProcessor() {
+        return mapper::toFakeEntity;
     }
 
+    @Bean
+    @StepScope
+    public JpaItemWriter<FakeRestaurantInfo> createPseudonimizeWriter() {
+        JpaItemWriter<FakeRestaurantInfo> jpaItemWriter = new JpaItemWriter<>();
+        jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+        return jpaItemWriter;
+
+    }
+
+    //in 1h4m31s26ms
 
 }
