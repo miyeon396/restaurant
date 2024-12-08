@@ -23,4 +23,16 @@ public class JobExecutionController {
 
         return "success";
     }
+
+    @GetMapping("/start/pseudonimize-job")
+    public String startPseudonimizeJob() {
+        JobParameters jobParameters = new JobParametersBuilder()
+                .addString("execType", "api")
+                .addLong("startDt", System.currentTimeMillis())
+                .toJobParameters();
+
+        service.startPseudonimizeJob(jobParameters);
+
+        return "success";
+    }
 }
