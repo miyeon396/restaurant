@@ -27,6 +27,7 @@ public class CsvReader {
     @StepScope
     public FlatFileItemReader<RestaurantInfo> csvContentReader(@Value("#{stepExecutionContext['minValue']}") Integer minValue,
                                                                @Value("#{stepExecutionContext['maxValue']}") Integer maxValue) {
+        System.out.println("csvminValue = " + minValue);
 
         FlatFileItemReader<RestaurantInfo> reader = new FlatFileItemReader<>();
         reader.setResource(new FileSystemResource(csvFilePath));

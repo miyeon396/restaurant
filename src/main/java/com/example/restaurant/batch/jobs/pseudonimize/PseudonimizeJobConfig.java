@@ -1,6 +1,6 @@
 package com.example.restaurant.batch.jobs.pseudonimize;
 
-import com.example.restaurant.batch.item.CsvPartitioner;
+import com.example.restaurant.batch.jobs.pseudonimize.step.create.CustomPartitioner;
 import com.example.restaurant.batch.listener.EtlRestaurantJobExecutionListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -27,11 +27,11 @@ public class PseudonimizeJobConfig {
 
 
     @Bean
-    public Job pseudonimizeJob(JobRepository jobRepository,
+    public Job pseudonimizeJob(JobRepository jobRepository, @Qualifier("createPseudonimizeStep") Step create,
                                PlatformTransactionManager transactionManager) {
         return new JobBuilder("pseudonimizeJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(pseudonimizePartitionStep(null, null))
+                .start(pseudonimizePartitionStep(null, null)) //이친구가 파티셔너
 //                .start("partitionStep", pseudonimizePartitioner())
 //                .start(create)
                 .listener(new EtlRestaurantJobExecutionListener())
@@ -43,9 +43,10 @@ public class PseudonimizeJobConfig {
     public Step pseudonimizePartitionStep(JobRepository jobRepository,
                                           @Qualifier("createPseudonimizeStep") Step create) {
         return new StepBuilder("pseudonimizePartitionStep", jobRepository)
-                .partitioner("partitionStep", new CsvPartitioner(maxCnt))
+//                .partitioner("partitionStep", new CsvPartitioner(maxCnt))
+                .partitioner("partitionStep", new CustomPartitioner())
                 .step(create)
-                .gridSize(15)
+                .gridSize(10)
                 .taskExecutor(pseudonimizeTaskExecutor())
                 .build();
     }
