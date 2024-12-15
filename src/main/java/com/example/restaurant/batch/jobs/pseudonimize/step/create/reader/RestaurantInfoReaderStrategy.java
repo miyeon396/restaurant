@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 
 import static com.example.restaurant.entity.QRestaurantInfo.restaurantInfo;
 
-//@StepScope
-//@Component
 @Configuration
 @RequiredArgsConstructor
 public class RestaurantInfoReaderStrategy implements TransferReaderStrategy<RestaurantInfo> {
@@ -39,6 +37,6 @@ public class RestaurantInfoReaderStrategy implements TransferReaderStrategy<Rest
                 true,
                 jpaQueryFactory -> jpaQueryFactory.selectFrom(restaurantInfo)
 //                        .where(restaurantInfo.no.between(minValue, maxValue)));
-                        .where(restaurantInfo.apvPermYmd.eq("2024-07-30")));
+                        .where(restaurantInfo.no.between(minValue, maxValue)));
     }
 }
